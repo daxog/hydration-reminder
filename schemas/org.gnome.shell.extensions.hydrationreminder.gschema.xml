@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.hydrationreminder" path="/org/gnome/shell/extensions/hydrationreminder/">
+    <key name="reminder-interval" type="i">
+      <default>30</default>
+      <summary>Reminder interval in minutes</summary>
+      <description>The number of minutes between hydration reminders.</description>
+    </key>
+  </schema>
+</schemalist>

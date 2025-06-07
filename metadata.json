@@ -1,0 +1,10 @@
+{
+  "name": "Hydration Reminder",
+  "description": "Reminder to drink water",
+  "uuid": "hydrationreminder@daxog.github.io",
+  "shell-version": [
+    "48"
+  ],
+  "url": "https://github.com/daxog/hydration-reminder",
+  "settings-schema": "org.gnome.shell.extensions.hydrationreminder"
+}
