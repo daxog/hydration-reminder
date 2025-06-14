@@ -1,7 +1,6 @@
 import GObject from 'gi://GObject';
 import St from 'gi://St';
 import Clutter from 'gi://Clutter';
-import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 
 import {Extension, gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
@@ -12,10 +11,12 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
 const Indicator = GObject.registerClass(
 class Indicator extends PanelMenu.Button {
-    _init(settings) {
+    _init(settings, extension) {
         super._init(0.0, _('Hydration Reminder'));
 
         this._settings = settings;
+        this._extension = extension;
+
         this._timeoutId = null;
         // track reminder state 
         this._isRunning = false;
@@ -56,10 +57,7 @@ class Indicator extends PanelMenu.Button {
         // create preferences button
         const prefsButton = this._createRoundButton('preferences-system-symbolic', _('Preferences'));
         prefsButton.connect('clicked', () => {
-            Gio.Subprocess.new(
-                ['gnome-extensions', 'prefs', 'hydrationreminder@daxog.github.io'],
-                Gio.SubprocessFlags.NONE
-            );
+            this._extension.openPreferences();
         });
         buttonRow.add_child(prefsButton);
 
@@ -91,6 +89,8 @@ class Indicator extends PanelMenu.Button {
         const intervalMinutes = this._settings.get_int('reminder-interval');
         const intervalSeconds = intervalMinutes * 60;
 
+        // remove timeout before creating new one
+        this._stopTimer(); 
         this._timeoutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, intervalSeconds, () => {
             if (this._isRunning) {
                 Main.notify(_('Drink some water 💧'));
@@ -135,10 +135,10 @@ class Indicator extends PanelMenu.Button {
     }
 });
 
-export default class IndicatorExampleExtension extends Extension {
+export default class HydrationReminderExtension extends Extension {
     enable() {
         this._settings = this.getSettings();
-        this._indicator = new Indicator(this._settings);
+        this._indicator = new Indicator(this._settings, this);
         Main.panel.addToStatusArea(this.uuid, this._indicator);
     }
 
