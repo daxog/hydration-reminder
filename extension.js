@@ -41,7 +41,7 @@ class Indicator extends PanelMenu.Button {
 
     _buildMenu() {
         const buttonRow = new St.BoxLayout({
-            style_class: 'vitals-button-box',
+            style_class: 'hydration-button-box',
             vertical: false,
             clip_to_allocation: true,
             x_align: Clutter.ActorAlign.CENTER,
@@ -111,7 +111,7 @@ class Indicator extends PanelMenu.Button {
     // create round icon button
     _createRoundButton(iconName, accessibleName = '') {
         const button = new St.Button({
-            style_class: 'message-list-clear-button button vitals-button-action',
+            style_class: 'message-list-clear-button button hydration-button-action',
             accessible_name: accessibleName,
         });
 
