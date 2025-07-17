@@ -16,7 +16,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y gettext glib2.0-bin zip
+          sudo apt install -y gettext libglib2.0-bin zip
 
       - name: Validate GSettings schema
         run: |
