@@ -1,0 +1,34 @@
+name: gnome-extension
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y gettext glib2.0-bin zip
+
+      - name: Validate GSettings schema
+        run: |
+          glib-compile-schemas --strict --dry-run schemas/
+
+      - name: Package extension
+        run: |
+          mkdir -p dist
+          zip -r dist/hydration-reminder.zip . -x '*.git*' -x 'dist/*' -x '.github/*'
+
+      - name: Upload extension zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: hydration-reminder-extension
+          path: dist/hydration-reminder.zip
